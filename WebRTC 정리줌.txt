@@ -1,0 +1,33 @@
+https://velog.io/@jsb100800/%EA%B0%9C%EB%B0%9C-WebRTC-SpringBoot-Vue.js%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-Group-Video-Call
+https://millo-l.github.io/WebRTC-%EC%9D%B4%EB%A1%A0-%EC%A0%95%EB%A6%AC%ED%95%98%EA%B8%B0/
+webRTC 세개의 서버 필요
+https://kid-dev.tistory.com/9?category=915837
+1.signaling server
+
+Session Control Message, ErrorMessages, Codec, Bandwith
+정보를 각각의 peer들에게 전달 중계해주는 서버
+->위의 정보들을 SDP사용
+->WebRTC와 별개로 직접 구축해야함
+->일반적으로 클라이언트 사이드와 Websocket 사용하여 통신
+peer간 통신완료
+그러나
+통신 중간에 방화벽,NAT환경에 놓여있는 Peer에 대해서는
+직접적인 Signaling 이 불가능하다.
+-> 설명할 STUN Server와 TURN Server필요
+2.STUN Server
+클라이언트 자신의 공인IP를 알려주는 서버
+->직접 구현 X 오픈소스나 google등 에서 운영하는 서버 사용해도됨
+->트래픽 낮아 무료서버사용
+
+3.TURN Server(꼭 안해도 될듯 규모커지면 하는게좋음)
+STUN Server에서 연결되지 못한 20%정도의 경우 
+보호정책이 강한 Symmetric Nat환경에서 나타나는데
+그 제한을 우회할 수 있게 해줌
+->Peer간 모든 트래픽 중계하기 때문에 상단한 부하 감당 비용크게 발생
+->Local IP, Public IP둘다 연결할 수 없는 경우 사용
+->COTURN 오픈소스 활용해 구축하는거 추천
+
+
+Peer 수가 작으면 mesh 방식이 좋음
+-> peer수가 늘어날수록 cllient 과부하가 급격하게 증가함
+Media Server도 있는데 이건 mesh 방식에서 필요하지않음
